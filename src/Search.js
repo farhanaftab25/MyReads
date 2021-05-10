@@ -14,7 +14,9 @@ class Search extends React.Component {
                 .then((books) => {
                     const shelves = this.props.shelves;
                     const shelvesBooks = Object.values(shelves).flat();
-
+                    /**
+                     *  Adding shelf property to book object
+                     */
                     let newBooks = !Array.isArray(books) ? [] : books.map((book) => {
                         let shelfBook = shelvesBooks.find(b => b.id === book.id);
                         if (shelfBook) {
@@ -25,7 +27,7 @@ class Search extends React.Component {
                         }
                         return book;
                     })
-
+                    /** End */
                     this.setState((prevState) => ({
                         books: newBooks
                     }));
