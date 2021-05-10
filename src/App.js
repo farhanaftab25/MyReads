@@ -17,7 +17,6 @@ class BooksApp extends React.Component {
 	componentDidMount = () => {
 		BooksAPI.getAll()
 		.then((books) => {
-			console.log(books);
 			let shelves = {};
 			books.forEach(book => {
 				const shelfName = book.shelf;
@@ -30,7 +29,6 @@ class BooksApp extends React.Component {
 			this.setState((prevState) => ({
 				shelves: shelves
 			}))
-			// console.log("After Mounting Getting from API" ,shelves);
 		})
 	}
 	addBookToShelf = (book, shelf) => {
@@ -57,8 +55,6 @@ class BooksApp extends React.Component {
 		}
 	}
 	move = (book, shelf) => {
-		console.log(shelf);
-		console.log("Book", book);
 		BooksAPI.update(book, shelf)
 			.then((data) => {
 				if (shelf !== 'none') {
@@ -68,7 +64,6 @@ class BooksApp extends React.Component {
 			});
 	}
 	render() {
-		console.log("Getting this from State", this.state.shelves);
 		return (
 			<div className="app">
 				<Switch>
@@ -99,7 +94,7 @@ class BooksApp extends React.Component {
 						</div>
 					</Route>
 					<Route path="/search">
-						<Search onMove={this.move}/>
+						<Search onMove={this.move} shelves={this.state.shelves}/>
 					</Route>
 				</Switch>
 

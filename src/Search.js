@@ -8,21 +8,42 @@ class Search extends React.Component {
         query: '',
         books: [],
     }
+    search = (query) => {
+        if (query.length !== 0) {
+            search(query.toLowerCase().trim())
+                .then((books) => {
+                    const shelves = this.props.shelves;
+                    const shelfBooks = Object.values(shelves).flat();
+
+                    let newBooks = books.map((book) => {
+                        let shelfBook = shelfBooks.find(d => d.id === book.id);
+                        if (shelfBook) {
+                            return {
+                                ...book,
+                                shelf: shelfBook.shelf
+                            }
+                        }
+                        return book;
+                    })
+
+                    this.setState((prevState) => ({
+                        books: newBooks
+                    }));
+                })
+        } else {
+            this.setState((prevState) => ({
+                books: []
+            }));
+        }
+    }
     handleChange = (event) => {
         const {value} = event.target;
         this.setState((prevState) => ({
             query: value
         }))
+        this.search(value);
     }
-
     render() {
-        const {query} = this.state;
-        search(query.toLowerCase().trim())
-            .then((books) => {
-                this.setState((prevState) => ({
-                    books: books
-                }))
-            })
         return (
             <div className="search-books">
                 <div className="search-books-bar">

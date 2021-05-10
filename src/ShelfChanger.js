@@ -16,12 +16,10 @@ class ShelfChanger extends React.Component {
 
     render() {
         const {book} = this.props;
-        console.log(book);
-        // console.log("Yes running");
         return (
             <select
                 onChange={this.handleChange}
-                defaultValue={book.shelf}
+                defaultValue={book.shelf || 'none'}
                 name='shelf'>
                 <option value="move" disabled>Move to...</option>
                 <option value="currentlyReading">Currently Reading</option>
