@@ -49,7 +49,7 @@ class BooksApp extends React.Component {
 			this.setState((prevState) => ({
 				shelves: {
 					...prevState.shelves,
-					[thisShelf]: prevState.shelves[thisShelf].filter(b => b.id !== book.id)
+					[thisShelf]: prevState.shelves[thisShelf].filter(currentShelfBook => currentShelfBook.id !== book.id)
 				}
 			}));
 		}

@@ -13,10 +13,10 @@ class Search extends React.Component {
             search(query.toLowerCase().trim())
                 .then((books) => {
                     const shelves = this.props.shelves;
-                    const shelfBooks = Object.values(shelves).flat();
+                    const shelvesBooks = Object.values(shelves).flat();
 
-                    let newBooks = books.map((book) => {
-                        let shelfBook = shelfBooks.find(d => d.id === book.id);
+                    let newBooks = !Array.isArray(books) ? [] : books.map((book) => {
+                        let shelfBook = shelvesBooks.find(b => b.id === book.id);
                         if (shelfBook) {
                             return {
                                 ...book,

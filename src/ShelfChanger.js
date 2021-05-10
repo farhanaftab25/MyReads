@@ -4,6 +4,7 @@ class ShelfChanger extends React.Component {
     state = {
         shelf: ''
     }
+
     handleChange = (event) => {
         const {name, value} = event.target
         this.setState((prevState) => ({
