@@ -1,28 +1,47 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { search } from './BooksAPI'
+import BookList from './BookList';
 
-function Search() {
-    return (
-        <div className="search-books">
-            <div className="search-books-bar">
-              <Link className="close-search" to="/">Close</Link>
-              <div className="search-books-input-wrapper">
-                {/*
-                  NOTES: The search from BooksAPI is limited to a particular set of search terms.
-                  You can find these search terms here:
-                  https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
+class Search extends React.Component {
+    state = {
+        query: '',
+        books: [],
+    }
+    handleChange = (event) => {
+        const {value} = event.target;
+        this.setState((prevState) => ({
+            query: value
+        }))
+    }
 
-                  However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-                  you don't find a specific author or title. Every search is limited by search terms.
-                */}
-                <input type="text" placeholder="Search by title or author"/>
-
-              </div>
+    render() {
+        const {query} = this.state;
+        search(query.toLowerCase().trim())
+            .then((books) => {
+                this.setState((prevState) => ({
+                    books: books
+                }))
+            })
+        return (
+            <div className="search-books">
+                <div className="search-books-bar">
+                    <Link className="close-search" to="/">Close</Link>
+                    <div className="search-books-input-wrapper">
+                        <input
+                        type="text"
+                        placeholder="Search by title or author"
+                        name="query"
+                        value={this.state.query}
+                        onChange={this.handleChange}
+                    />
+                    </div>
+                </div>
+                <div className="search-books-results">
+                    {Array.isArray(this.state.books) && <BookList books={this.state.books} onMove={this.props.onMove}/>}
+                </div>
             </div>
-            <div className="search-books-results">
-              <ol className="books-grid"></ol>
-            </div>
-        </div>
-    )
+        );
+    }
 }
 export default Search;

@@ -34,26 +34,41 @@ class BooksApp extends React.Component {
 		})
 	}
 	addBookToShelf = (book, shelf) => {
+		let newBook = {
+			...book,
+			shelf: shelf
+		};
 		this.setState((prevState) => ({
 			shelves: {
 				...prevState.shelves,
-				shelf: [...prevState.shelves[shelf], book]
+				[shelf]: [...prevState.shelves[shelf], newBook]
 			}
 		}));
 	}
-	removeBookFromShelf = (book, shelf) => {
-		this.setState((prevState) => ({
-			shelves: {
-				...prevState.shelves,
-				shelf: prevState.shelves[shelf].filter(b => b.id !== book.id)
-			}
-		}));
+	removeBook = (book) => {
+		const thisShelf = book.shelf;
+		if (thisShelf) {
+			this.setState((prevState) => ({
+				shelves: {
+					...prevState.shelves,
+					[thisShelf]: prevState.shelves[thisShelf].filter(b => b.id !== book.id)
+				}
+			}));
+		}
 	}
 	move = (book, shelf) => {
-
+		console.log(shelf);
+		console.log("Book", book);
+		BooksAPI.update(book, shelf)
+			.then((data) => {
+				if (shelf !== 'none') {
+					this.addBookToShelf(book, shelf);
+				}
+				this.removeBook(book);
+			});
 	}
 	render() {
-		// console.log("Getting this from State", this.state.shelves);
+		console.log("Getting this from State", this.state.shelves);
 		return (
 			<div className="app">
 				<Switch>
@@ -64,15 +79,18 @@ class BooksApp extends React.Component {
 								<div>
 									<Shelf
 										shelfName="Currently Reading"
-										books={this.state.shelves['currentlyReading']}/>
+										books={this.state.shelves['currentlyReading']}
+										onMove={this.move}/>
 
 									<Shelf
 										shelfName="Want To Read"
-										books={this.state.shelves['wantToRead']}/>
+										books={this.state.shelves['wantToRead']}
+										onMove={this.move}/>
 
 									<Shelf
 										shelfName="Read"
-										books={this.state.shelves['read']}/>
+										books={this.state.shelves['read']}
+										onMove={this.move}/>
 								</div>
 							</div>
 							<div className="open-search">
@@ -81,7 +99,7 @@ class BooksApp extends React.Component {
 						</div>
 					</Route>
 					<Route path="/search">
-						<Search />
+						<Search onMove={this.move}/>
 					</Route>
 				</Switch>
 

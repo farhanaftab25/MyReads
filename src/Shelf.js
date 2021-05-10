@@ -8,7 +8,7 @@ function Shelf(props) {
         <div className="bookshelf">
             <h2 className="bookshelf-title">{ shelfName }</h2>
             <div className="bookshelf-books">
-                <BookList books={books}/>
+                <BookList books={books} onMove={props.onMove}/>
             </div>
         </div>
     )
