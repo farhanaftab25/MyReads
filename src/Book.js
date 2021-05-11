@@ -3,6 +3,7 @@ import ShelfChanger from './ShelfChanger';
 
 function Book(props) {
     const {book} = props;
+    console.log(book);
     return (
         <li>
             <div className="book">
@@ -11,7 +12,7 @@ function Book(props) {
                         style={{
                             width: 128,
                             height: 193,
-                            backgroundImage: `url(${book.imageLinks.thumbnail})`
+                            backgroundImage: `url(${book.imageLinks && book.imageLinks.thumbnail})`
                         }}></div>
                     <div className="book-shelf-changer">
                         <ShelfChanger book={book} onMove={props.onMove}/>
