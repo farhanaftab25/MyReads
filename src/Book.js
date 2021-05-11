@@ -3,7 +3,6 @@ import ShelfChanger from './ShelfChanger';
 
 function Book(props) {
     const {book} = props;
-    console.log(book);
     return (
         <li>
             <div className="book">
